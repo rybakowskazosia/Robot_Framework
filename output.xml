@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.11.4 on win32)" generated="20230928 13:55:07.130" rpa="false" schemaversion="4">
+<suite id="s1" name="Email" source="C:\staż\python-git\RobotFramework\email.robot">
+<test id="s1-t1" name="Download Email" line="11">
+<kw name="Open Mailbox" library="ImapLibrary2">
+<doc>Open IMAP email client session to given ``host`` with given ``user`` and ``password``.</doc>
+<msg timestamp="20230928 13:55:11.310" level="FAIL">ConnectionRefusedError: [WinError 10061] Nie można nawiązać połączenia, ponieważ komputer docelowy aktywnie go odmawia</msg>
+<status status="FAIL" starttime="20230928 13:55:07.181" endtime="20230928 13:55:11.336"/>
+</kw>
+<kw name="Login">
+<arg>${username}</arg>
+<arg>${password}</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.342" endtime="20230928 13:55:11.342"/>
+</kw>
+<kw name="Search Messages">
+<var>${email_search}</var>
+<arg>${search}</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.349" endtime="20230928 13:55:11.349"/>
+</kw>
+<kw name="Get From List">
+<var>${latest_email}</var>
+<arg>${email_search}</arg>
+<arg>-1</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.363" endtime="20230928 13:55:11.364"/>
+</kw>
+<kw name="Select Message">
+<arg>${latest_email}</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.374" endtime="20230928 13:55:11.374"/>
+</kw>
+<kw name="Get Message Header">
+<var>${email_subject}</var>
+<arg>Subject</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.378" endtime="20230928 13:55:11.378"/>
+</kw>
+<kw name="Get Message Body">
+<var>${email_body}</var>
+<arg>plain</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.381" endtime="20230928 13:55:11.381"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>Content of message with subject '${email_subject}':\n${email_body}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" starttime="20230928 13:55:11.382" endtime="20230928 13:55:11.382"/>
+</kw>
+<kw name="Get Links From Email Body">
+<var>${links}</var>
+<arg>${email_body}</arg>
+<status status="NOT RUN" starttime="20230928 13:55:11.386" endtime="20230928 13:55:11.386"/>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<arg>Links found:\n@{links}</arg>
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<status status="NOT RUN" starttime="20230928 13:55:11.388" endtime="20230928 13:55:11.388"/>
+</kw>
+<kw name="Close Mailbox" library="ImapLibrary2">
+<doc>Close IMAP email client session.</doc>
+<status status="NOT RUN" starttime="20230928 13:55:11.389" endtime="20230928 13:55:11.389"/>
+</kw>
+<status status="FAIL" starttime="20230928 13:55:07.180" endtime="20230928 13:55:11.389">ConnectionRefusedError: [WinError 10061] Nie można nawiązać połączenia, ponieważ komputer docelowy aktywnie go odmawia</status>
+</test>
+<status status="FAIL" starttime="20230928 13:55:07.132" endtime="20230928 13:55:11.395"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Email">Email</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
