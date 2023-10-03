@@ -1,64 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.11.4 on win32)" generated="20230928 13:55:07.130" rpa="false" schemaversion="4">
+<robot generator="Robot 6.1.1 (Python 3.11.4 on win32)" generated="20230929 12:28:26.442" rpa="false" schemaversion="4">
 <suite id="s1" name="Email" source="C:\staż\python-git\RobotFramework\email.robot">
 <test id="s1-t1" name="Download Email" line="11">
 <kw name="Open Mailbox" library="ImapLibrary2">
+<arg>host=${IMAP host}</arg>
+<arg>user=${username}</arg>
+<arg>password=${password}</arg>
+<arg>port=993</arg>
 <doc>Open IMAP email client session to given ``host`` with given ``user`` and ``password``.</doc>
-<msg timestamp="20230928 13:55:11.310" level="FAIL">ConnectionRefusedError: [WinError 10061] Nie można nawiązać połączenia, ponieważ komputer docelowy aktywnie go odmawia</msg>
-<status status="FAIL" starttime="20230928 13:55:07.181" endtime="20230928 13:55:11.336"/>
+<msg timestamp="20230929 12:28:26.507" level="TRACE">Arguments: [ host='imap.wp.pl' | user='z.rybakowska8@wp.pl' | password='Robotframework' | port='993' ]</msg>
+<msg timestamp="20230929 12:28:27.156" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230929 12:28:26.507" endtime="20230929 12:28:27.157"/>
 </kw>
-<kw name="Login">
-<arg>${username}</arg>
-<arg>${password}</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.342" endtime="20230928 13:55:11.342"/>
+<kw name="Mark All Emails As Read" library="ImapLibrary2">
+<doc>Mark all received emails as read.</doc>
+<msg timestamp="20230929 12:28:27.159" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230929 12:28:27.187" level="FAIL">error: UID command error: BAD [b'Bad value for message data item (MARKER:cas1tp6a3tpf2qgnqleh)']</msg>
+<msg timestamp="20230929 12:28:27.221" level="DEBUG">Traceback (most recent call last):
+  File "C:\staż\python-git\RobotFramework\my_env\Lib\site-packages\ImapLibrary2\__init__.py", line 229, in mark_all_emails_as_read
+    self._imap.uid('store', mail, '+FLAGS', r'\SEEN')
+  File "C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\imaplib.py", line 890, in uid
+    typ, dat = self._simple_command(name, command, *args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\imaplib.py", line 1230, in _simple_command
+    return self._command_complete(name, self._command(name, *args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\imaplib.py", line 1055, in _command_complete
+    raise self.error('%s command error: %s %s' % (name, typ, data))
+imaplib.IMAP4.error: UID command error: BAD [b'Bad value for message data item (MARKER:cas1tp6a3tpf2qgnqleh)']</msg>
+<status status="FAIL" starttime="20230929 12:28:27.159" endtime="20230929 12:28:27.221"/>
 </kw>
-<kw name="Search Messages">
-<var>${email_search}</var>
-<arg>${search}</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.349" endtime="20230928 13:55:11.349"/>
+<kw name="Get Email Count" library="ImapLibrary2">
+<var>${email_count}</var>
+<status status="NOT RUN" starttime="20230929 12:28:27.222" endtime="20230929 12:28:27.222"/>
 </kw>
-<kw name="Get From List">
-<var>${latest_email}</var>
-<arg>${email_search}</arg>
-<arg>-1</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.363" endtime="20230928 13:55:11.364"/>
+<kw name=":FOR">
+<arg>${index}</arg>
+<arg>IN RANGE</arg>
+<arg>${email_count}</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.223" endtime="20230929 12:28:27.223"/>
 </kw>
-<kw name="Select Message">
-<arg>${latest_email}</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.374" endtime="20230928 13:55:11.374"/>
+<kw name="\">
+<arg>${email_index}=</arg>
+<arg>Evaluate</arg>
+<arg>${index} + 1</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.224" endtime="20230929 12:28:27.224"/>
 </kw>
-<kw name="Get Message Header">
-<var>${email_subject}</var>
+<kw name="\">
+<arg>${email_subject}=</arg>
+<arg>Get Email Header</arg>
 <arg>Subject</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.378" endtime="20230928 13:55:11.378"/>
+<arg>${email_index}</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.225" endtime="20230929 12:28:27.225"/>
 </kw>
-<kw name="Get Message Body">
-<var>${email_body}</var>
+<kw name="\">
+<status status="NOT RUN" starttime="20230929 12:28:27.226" endtime="20230929 12:28:27.226"/>
+</kw>
+<kw name="\">
+<arg>Run Keyword If</arg>
+<arg>'${email_subject}' == '${search}'</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.227" endtime="20230929 12:28:27.227"/>
+</kw>
+<kw name="\">
+<arg>\</arg>
+<arg>Log</arg>
+<arg>Found email with subject '${search}' at index ${email_index}</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.228" endtime="20230929 12:28:27.228"/>
+</kw>
+<kw name="\">
+<arg>\</arg>
+<arg>Select Email</arg>
+<arg>${email_index}</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.229" endtime="20230929 12:28:27.229"/>
+</kw>
+<kw name="\">
+<arg>\</arg>
+<arg>${email_body}=</arg>
+<arg>Get Email Body</arg>
 <arg>plain</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.381" endtime="20230928 13:55:11.381"/>
+<status status="NOT RUN" starttime="20230929 12:28:27.231" endtime="20230929 12:28:27.231"/>
 </kw>
-<kw name="Log" library="BuiltIn">
-<arg>Content of message with subject '${email_subject}':\n${email_body}</arg>
-<doc>Logs the given message with the given level.</doc>
-<status status="NOT RUN" starttime="20230928 13:55:11.382" endtime="20230928 13:55:11.382"/>
-</kw>
-<kw name="Get Links From Email Body">
-<var>${links}</var>
+<kw name="\">
+<arg>\</arg>
+<arg>${links}=</arg>
+<arg>Get Links From Email</arg>
 <arg>${email_body}</arg>
-<status status="NOT RUN" starttime="20230928 13:55:11.386" endtime="20230928 13:55:11.386"/>
+<status status="NOT RUN" starttime="20230929 12:28:27.233" endtime="20230929 12:28:27.234"/>
 </kw>
-<kw name="Log Many" library="BuiltIn">
+<kw name="\">
+<arg>\</arg>
+<arg>Log Many</arg>
 <arg>Links found:\n@{links}</arg>
-<doc>Logs the given messages as separate entries using the INFO level.</doc>
-<status status="NOT RUN" starttime="20230928 13:55:11.388" endtime="20230928 13:55:11.388"/>
+<status status="NOT RUN" starttime="20230929 12:28:27.234" endtime="20230929 12:28:27.235"/>
+</kw>
+<kw name="\">
+<arg>\</arg>
+<arg>Close Mailbox</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.236" endtime="20230929 12:28:27.236"/>
+</kw>
+<kw name="\">
+<arg>\</arg>
+<arg>Exit For Loop If</arg>
+<arg>True</arg>
+<status status="NOT RUN" starttime="20230929 12:28:27.236" endtime="20230929 12:28:27.236"/>
 </kw>
 <kw name="Close Mailbox" library="ImapLibrary2">
 <doc>Close IMAP email client session.</doc>
-<status status="NOT RUN" starttime="20230928 13:55:11.389" endtime="20230928 13:55:11.389"/>
+<status status="NOT RUN" starttime="20230929 12:28:27.238" endtime="20230929 12:28:27.238"/>
 </kw>
-<status status="FAIL" starttime="20230928 13:55:07.180" endtime="20230928 13:55:11.389">ConnectionRefusedError: [WinError 10061] Nie można nawiązać połączenia, ponieważ komputer docelowy aktywnie go odmawia</status>
+<status status="FAIL" starttime="20230929 12:28:26.506" endtime="20230929 12:28:27.238">error: UID command error: BAD [b'Bad value for message data item (MARKER:cas1tp6a3tpf2qgnqleh)']</status>
 </test>
-<status status="FAIL" starttime="20230928 13:55:07.132" endtime="20230928 13:55:11.395"/>
+<status status="FAIL" starttime="20230929 12:28:26.444" endtime="20230929 12:28:27.241"/>
 </suite>
 <statistics>
 <total>
